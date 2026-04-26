@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Ghi chú</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px;}
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .alert-success { color: #155724; background-color: #d4edda; padding: 10px; margin-bottom: 15px; border-radius: 4px; }
+        .alert-danger { color: #721c24; background-color: #f8d7da; padding: 10px; margin-bottom: 15px; border-radius: 4px; }
+        .btn { padding: 5px 10px; text-decoration: none; border: 1px solid #ccc; border-radius: 3px; background-color: #f9f9f9; color: black; }
+        .btn-edit { background-color: #ffc107; }
+        .btn-delete { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+<h2>Danh sách Ghi chú</h2>
+
+<div th:if="${message}" class="alert-success" th:text="${message}"></div>
+<div th:if="${error}" class="alert-danger" th:text="${error}"></div>
+
+<a th:href="@{/todos/create}" class="btn">+ Thêm ghi chú mới</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nội dung</th>
+        <th>Ngày hết hạn</th>
+        <th>Trạng thái</th>
+        <th>Độ ưu tiên</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${todos}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.content}"></td>
+        <td th:text="${task.dueDate}"></td>
+        <td th:text="${task.status}"></td>
+        <td th:text="${task.priority}"></td>
+        <td>
+            <a class="btn btn-edit" th:href="@{/todos/edit/{id}(id=${task.id})}">Sửa</a>
+
+            <a class="btn btn-delete" th:href="@{/todos/delete/{id}(id=${task.id})}"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa bản ghi này không?');">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
