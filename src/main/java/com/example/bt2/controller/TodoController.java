@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class TodoController {
     private TodoService todoService;
 
     @GetMapping({"", "/"})
-    public String showTodoList(Model model) {
+    public String showTodoList(Model model,HttpSession session) {
         String owner = (String) session.getAttribute("ownerName");
         if (owner == null) {
             return "redirect:/welcome";
@@ -53,8 +53,7 @@ public class TodoController {
 
         return "redirect:/todos";
     }
-
-    // UPDATE: Lấy dữ liệu đổ ra Form
+    
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Todo> todoOpt = todoService.findById(id);
@@ -66,8 +65,7 @@ public class TodoController {
             return "redirect:/todos";
         }
     }
-
-    // DELETE: Xóa dữ liệu
+    
     @GetMapping("/delete/{id}")
     public String deleteTodo(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         boolean isDeleted = todoService.deleteById(id);
