@@ -1,4 +1,4 @@
-package ra.edu.controller;
+package com.example.bt2.controller;
 
 import com.example.bt2.entity.Todo;
 import com.example.bt2.service.TodoService;
@@ -20,21 +20,22 @@ public class TodoController {
     @Autowired
     private TodoService todoService;
 
-    // READ: Hiển thị danh sách
     @GetMapping({"", "/"})
     public String showTodoList(Model model) {
+        String owner = (String) session.getAttribute("ownerName");
+        if (owner == null) {
+            return "redirect:/welcome";
+        }
         model.addAttribute("todos", todoService.findAll());
         return "index";
     }
 
-    // CREATE (Hiển thị Form thêm mới)
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("todo", new Todo());
         return "form";
     }
 
-    // CREATE & UPDATE: Xử lý lưu dữ liệu (Dùng chung cho cả Thêm và Sửa)
     @PostMapping("/save")
     public String saveTodo(@Valid @ModelAttribute("todo") Todo todo,
                            BindingResult bindingResult,
